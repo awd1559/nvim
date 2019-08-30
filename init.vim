@@ -125,7 +125,7 @@ nnoremap k gk
 
   
 "Leader Shortcuts
-let mapleader=","       " leader is comma
+let mapleader=";"       " leader is comma
 
 
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -171,10 +171,6 @@ set smartcase
 " =============================================
 " ==== Map ====================================
 " =============================================
-
-" Save & quit
-map Q :q<CR>
-map W :w<CR>
 
 " Open the vimrc file anytime
 map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
@@ -418,6 +414,7 @@ let g:lightline = {
 " === NERDTree
 " ===
 map tt :NERDTreeToggle<CR>
+map <C-t> :NERDTreeToggle<CR>      "ctrl-t 随时切换
 let NERDTreeMapOpenExpl = ""
 let NERDTreeMapUpdir = ""
 let NERDTreeMapUpdirKeepOpen = "l"
@@ -428,6 +425,7 @@ let NERDTreeMapOpenInTab = "o"
 let NERDTreeMapPreview = ""
 let NERDTreeMapCloseDir = "n"
 let NERDTreeMapChangeRoot = "y"
+let NERDTreeQuitOnOpen  = "1"
 
 
 " ==
@@ -526,7 +524,7 @@ let g:python_highlight_all = 1
 " ===
 " === Taglist
 " ===
-map <silent> T :TagbarOpenAutoClose<CR>
+map ll :TagbarOpenAutoClose<CR>
 
 
 " ===
