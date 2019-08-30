@@ -1,19 +1,49 @@
+"
+"
+"
+"
+"
+" ==== TEST ====
+"set clipboard=unnamed
+"let &t_ut=''
+"set listchars=tab:▸\ ,trail:▫
 
-syntax on
+
+" ====
+" ==== Auto install for first time use
+" ====
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" ====================
+" === Editor Setup ===
+" ====================
+set autochdir
 set number
-set norelativenumber
+syntax on
+syntax enable           " enable syntax processing
 set cursorline
+set norelativenumber
 set wrap
+set tw=0
 set showcmd
 set wildmenu
-
 set hlsearch
 exec "nohlsearch"
 set incsearch
+set autoindent
+set paste
 set ignorecase
 set smartcase
-
-
+set expandtab
+set tabstop=4       	" number of visual spaces per TAB
+set shiftwidth=2
+set softtabstop=2
+set scrolloff=5
+set list
 set nocompatible
 filetype on
 filetype indent on
@@ -21,49 +51,20 @@ filetype plugin on
 filetype plugin indent on
 set mouse=a
 set encoding=utf-8
-let &t_ut=''
-set expandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set scrolloff=5
-set tw=0
+set ttimeoutlen=0
+set viewoptions=cursor,folds,slash,unix
 set indentexpr=
 set backspace=indent,eol,start
 set foldmethod=indent
 set foldlevel=99
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-set laststatus=2
-set autochdir
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-noremap = nzz
-noremap - Nzz
-noremap <LEADER><CR> :nohlsearch<CR>
-
-
+set formatoptions-=tc
+set splitright
+set splitbelow
+set laststatus=2	"总是显示状态栏
+set ruler		"显示光标当前位置
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
-set encoding=utf-8
-
-
-set cursorline          " highlight current line
 set showmatch           " highlight matching [{()}]
-set tabstop=4
-set shiftwidth=4
-set autoindent
-set paste
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
-
-"总是显示状态栏
-set laststatus=2
-"显示光标当前位置
-set ruler
 
 "mouse
 set mouse=a
@@ -76,10 +77,6 @@ autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 
 
-"colorscheme badwolf     " awesome colorscheme
-colorscheme snazzy
-syntax enable           " enable syntax processing
-set tabstop=4       	" number of visual spaces per TAB
 set softtabstop=4   	" number of spaces in tab when editing
 set expandtab       	" tabs are spaces
 set showcmd             " show command in bottom bar
@@ -103,10 +100,63 @@ set foldmethod=indent   " fold based on indent level， 基于缩进来折叠
 nnoremap j gj
 nnoremap k gk
 
-
   
 "Leader Shortcuts
 let mapleader=","       " leader is comma
+
+
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+noremap = nzz
+noremap - Nzz
+noremap <LEADER><CR> :nohlsearch<CR>
+
+
+
+" ===
+" === Terminal Behavior
+" ===
+let g:neoterm_autoscroll = 1
+autocmd TermOpen term://* startinsert
+"tnoremap <C-N> <C-\><C-N>:q<CR>
+
+
+
+" ===
+" === Status bar behaviors
+" ===
+set noshowmode
+set showcmd
+" set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
+set wildmenu
+
+
+" ===
+" === Searching options
+" ===
+exec "nohlsearch"
+set ignorecase
+set smartcase
+
+
+
+
+" ====
+" ==== Map
+" ====
+
+" Save & quit
+map Q :q<CR>
+map S :w<CR>
+
+" Open the vimrc file anytime
+map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
+
+
 
 
 
