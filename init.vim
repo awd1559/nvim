@@ -3,6 +3,14 @@
 " sudo python get-pip.py
 " sudo pip install pyls
 "
+"
+"
+"
+"
+
+
+
+
 " ==== TEST ====
 "set clipboard=unnamed
 "let &t_ut=''
@@ -23,14 +31,12 @@ endif
 " ====
 " ==== Auto install for first time use
 " ====
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 if iswindows && empty(glob('C:\\Users\\Administrator\\AppData\\Local\\nvim\\autoload\\plug.vim'))
 	silent !curl -fLo C:\\Users\\Administrator\\AppData\\Local\\nvim\\autoload\\plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+elseif !iswindows && empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
@@ -276,17 +282,23 @@ Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
 "Plug 'w0rp/ale'
 
 " Auto Complete
-"Plug 'Valloric/YouCompleteMe'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'davidhalter/jedi-vim'
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-jedi'				"python
 Plug 'ncm2/ncm2-github'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
-"Plug 'ncm2/ncm2-match-highlight'
-Plug 'ncm2/ncm2-markdown-subscope'
+Plug 'ncm2/ncm2-markdown-subscope'	"Plug 'ncm2/ncm2-match-highlight'
+Plug 'ncm2/ncm2-syntax'
+Plug 'ncm2/ncm2-gtags'
+Plug 'ncm2/ncm2-cssomni'			"css
+Plug 'ncm2/ncm2-tern'				"javascript
+Plug 'mhartington/nvim-typescript'  "typescript
+Plug 'ncm2/ncm2-pyclang' 			"c/c++
+Plug 'ncm2/ncm2-vim'				"vimscript
+Plug 'phpactor/ncm2-phpactor'		"php
+Plug 'ObserverOfTime/ncm2-jc2'		"java
+
+
 
 " Language Server
 if iswindows
