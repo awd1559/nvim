@@ -394,7 +394,7 @@ set termguicolors     " enable true colors support
 "colorscheme snazzy
 let g:space_vim_transp_bg = 1
 "set background=dark
-colorscheme space_vim_theme
+"colorscheme space_vim_theme
 let g:airline_theme='dracula'
 
 let g:lightline = {
