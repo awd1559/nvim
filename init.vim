@@ -247,14 +247,16 @@ map tmi :+tabmove<CR>
 
 
 
-" ===
+" ========================================================
 " === Install Plugins with Vim-Plug
-" ===
-"vim-plugin
-":PlugInstall 
-"curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" ========================================================
 
-call plug#begin('~/.config/nvim/plugged')
+if iswindows
+    call plug#begin('C:\\Users\\Administrator\\AppData\\Local\\nvim\\plugged')
+else
+	call plug#begin('~/.config/nvim/plugged')
+endif
+
 
 " Pretty Dress
 Plug 'vim-airline/vim-airline'
@@ -287,10 +289,17 @@ Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-markdown-subscope'
 
 " Language Server
+if iswindows
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'powershell -executionpolicy bypass -File install.ps1',
+    \ }
+else
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+endif
 
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
@@ -363,99 +372,256 @@ call plug#end()
 
 
 
+" =============================================
+" === Plugins ===
+" =============================================
 
 
 
 
+" Open Startify
+map <LEADER>st :Startify<CR>
 
 
 
+" ===
+" === Dress up my vim
+" ===
+"map <LEADER>c1 :set background=dark<CR>:colorscheme snazzy<CR>:AirlineTheme dracula<CR>
+"map <LEADER>c2 :set background=light<CR>:colorscheme ayu<CR>:AirlineTheme ayu_light<CR>
 
+set termguicolors     " enable true colors support
+"colorscheme snazzy
+let g:space_vim_transp_bg = 1
+"set background=dark
+colorscheme space_vim_theme
+let g:airline_theme='dracula'
 
-
-
-
-
-
-
-
-"YouCompleteMe
-let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']		   "shift+tab: backward select
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>' ] "tab or enter to select
-let g:ycm_error_symbol = '>>'
-let g:ycm_warning_symbol = '>*'
-nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
-nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nmap <F4> :YcmDiags<CR>
-
-
-
-
-"tagbar
-nmap <F8> :TagbarToggle<CR>
-"tagbar-js
-"npm install -g esctags
-
-
-
-
-"taglist
-"yum install ctags
-let Tlist_Ctags_Cmd="/usr/bin/ctags" 	"taglist with ctags"  
-let Tlist_Show_One_File=1     			"only show current file's taglist    
-let Tlist_Exit_OnlyWindow=1   			"if taglist is the last window, exit vim   
-let Tlist_Use_Right_Window=0			"taglist window showup at left by default
-let Tlist_Use_SingleClick=1
-let Tlist_Auto_Open=0
-let Tlist_Close_On_Select=1
-let Tlist_GainFocus_On_ToggleOpen=1
-"let Tlist_Max_Tag_Length
-"let Tlist_WinHeight
-"let Tlist_WinWidth  
-nnoremap ll :TlistToggle<CR>
-"nnoremap :TlistOpen<CR>
-"nnoremap :TlistClose<CR>
-
-
-
-
-"mru
-let MRU_Window_Height=15
-let MRU_Use_Current_Window=1
-let MRU_Auto_Close=1
-nnoremap  mm :MRU<CR>		"bb open mru window
-
-
-
-
-"NerdTree
-let NERDTreeWinPos = "left"
-nnoremap tt :NERDTreeToggle<CR>   "normal mode切换
-map <C-n> :NERDTreeToggle<CR>      "ctrl-n 随时切换
-
-
-
-
-"CtrlP
-let g:ctrlp_map = '<c-p>'		"ctrl+p 触发文件搜索
-let g:ctrlp_cmd = 'CtrlP'		"in search file mode
-
-let g:ctrlp_working_path_mode = 'ra'		"search path
-"c - directory of current file
-"r - nearest that contains one of these dir or files : .git .hg .svn
-"a - like c, but only if the current working dir
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
+let g:lightline = {
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+  \     }
   \ }
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
-let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'  " Windows
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 
+" ===
+" === NERDTree
+" ===
+map tt :NERDTreeToggle<CR>
+let NERDTreeMapOpenExpl = ""
+let NERDTreeMapUpdir = ""
+let NERDTreeMapUpdirKeepOpen = "l"
+let NERDTreeMapOpenSplit = ""
+let NERDTreeOpenVSplit = ""
+let NERDTreeMapActivateNode = "i"
+let NERDTreeMapOpenInTab = "o"
+let NERDTreeMapPreview = ""
+let NERDTreeMapCloseDir = "n"
+let NERDTreeMapChangeRoot = "y"
+
+
+" ==
+" == NERDTree-git
+" ==
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+
+" ===
+" === NCM2
+" ===
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>": "\<CR>")
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+let ncm2#popup_delay = 5
+let g:ncm2#matcher = "substrfuzzy"
+let g:ncm2_jedi#python_version = 3
+let g:ncm2#match_highlight = 'bold'
+
+"let g:jedi#auto_initialization = 1
+""let g:jedi#completion_enabled = 0
+""let g:jedi#auto_vim_configuration = 0
+""let g:jedi#smart_auto_mapping = 0
+"let g:jedi#popup_on_dot = 1
+"let g:jedi#completion_command = ""
+"let g:jedi#show_call_signatures = "1"
+
+
+" Some testing features
+set shortmess+=c
+set notimeout
+
+
+" ===
+" === vim-indent-guide
+" ===
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_color_change_percent = 1
+silent! unmap <LEADER>ig
+autocmd WinEnter * silent! unmap <LEADER>ig
+
+
+" ===
+" === some error checking
+" ===
+
+
+
+" ===
+" === MarkdownPreview
+" ===
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = 'chromium'
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+
+
+" ===
+" === Python-syntax
+" ===
+let g:python_highlight_all = 1
+" let g:python_slow_sync = 0
+
+
+" ===
+" === Taglist
+" ===
+map <silent> T :TagbarOpenAutoClose<CR>
+
+
+" ===
+" === vim-table-mode
+" ===
+map <LEADER>tm :TableModeToggle<CR>
+
+
+" ===
+" === Goyo
+" ===
+map <LEADER>gy :Goyo<CR>
+
+
+" ===
+" === CtrlP
+" ===
+map <C-p> :CtrlP<CR>
+let g:ctrlp_prompt_mappings = {
+  \ 'PrtSelectMove("j")':   ['<c-e>', '<down>'],
+  \ 'PrtSelectMove("k")':   ['<c-u>', '<up>'],
+  \ }
+
+
+" ===
+" === vim-signiture
+" ===
+let g:SignatureMap = {
+        \ 'Leader'             :  "m",
+        \ 'PlaceNextMark'      :  "m,",
+        \ 'ToggleMarkAtLine'   :  "m.",
+        \ 'PurgeMarksAtLine'   :  "dm-",
+        \ 'DeleteMark'         :  "dm",
+        \ 'PurgeMarks'         :  "dm/",
+        \ 'PurgeMarkers'       :  "dm?",
+        \ 'GotoNextLineAlpha'  :  "m<LEADER>",
+        \ 'GotoPrevLineAlpha'  :  "",
+        \ 'GotoNextSpotAlpha'  :  "m<LEADER>",
+        \ 'GotoPrevSpotAlpha'  :  "",
+        \ 'GotoNextLineByPos'  :  "",
+        \ 'GotoPrevLineByPos'  :  "",
+        \ 'GotoNextSpotByPos'  :  "mn",
+        \ 'GotoPrevSpotByPos'  :  "mp",
+        \ 'GotoNextMarker'     :  "",
+        \ 'GotoPrevMarker'     :  "",
+        \ 'GotoNextMarkerAny'  :  "",
+        \ 'GotoPrevMarkerAny'  :  "",
+        \ 'ListLocalMarks'     :  "m/",
+        \ 'ListLocalMarkers'   :  "m?"
+        \ }
+
+
+" ===
+" === Undotree
+" ===
+let g:undotree_DiffAutoOpen = 0
+map L :UndotreeToggle<CR>
+
+" ==
+" == vim-multiple-cursor
+" ==
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_start_word_key      = '<c-k>'
+let g:multi_cursor_select_all_word_key = '<a-k>'
+let g:multi_cursor_start_key           = 'g<c-k>'
+let g:multi_cursor_select_all_key      = 'g<a-k>'
+let g:multi_cursor_next_key            = '<c-k>'
+let g:multi_cursor_prev_key            = '<c-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+
+" My snippits
+if iswindows
+	source C:\\Users\\Administrator\\AppData\\Local\\nvim\\snippits.vim
+else
+	source ~/.config/nvim/snippits.vim
+endif
+
+" comfortable-motion
+"nnoremap <silent> <C-e> :call comfortable_motion#flick(50)<CR>
+"nnoremap <silent> <C-u> :call comfortable_motion#flick(-50)<CR>
+"let g:comfortable_motion_no_default_key_mappings = 1
+"let g:comfortable_motion_interval = 1
+
+
+" Startify
+let g:startify_lists = [
+      \ { 'type': 'files',     'header': ['   MRU']            },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ { 'type': 'commands',  'header': ['   Commands']       },
+      \ ]
+
+" Far.vim
+nnoremap <silent> <LEADER>f :F  %<left><left>
+
+" Testring my own plugin
+if !empty(glob('~/Github/vim-calc/vim-calc.vim'))
+  source ~/Github/vim-calc/vim-calc.vim
+endif
+map <LEADER>a :call Calc()<CR>
+
+let g:user_emmet_leader_key='<C-f>'
