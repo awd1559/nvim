@@ -1,7 +1,7 @@
-"
-"
-"
-"
+" yum install -y python36
+" curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+" sudo python get-pip.py
+" sudo pip install pyls
 "
 " ==== TEST ====
 "set clipboard=unnamed
@@ -377,13 +377,6 @@ call plug#end()
 " =============================================
 
 
-
-
-" Open Startify
-map <LEADER>st :Startify<CR>
-
-
-
 " ===
 " === Dress up my vim
 " ===
@@ -578,7 +571,7 @@ let g:SignatureMap = {
 " === Undotree
 " ===
 let g:undotree_DiffAutoOpen = 0
-map L :UndotreeToggle<CR>
+map U :UndotreeToggle<CR>
 
 " ==
 " == vim-multiple-cursor
@@ -614,6 +607,9 @@ let g:startify_lists = [
       \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
       \ { 'type': 'commands',  'header': ['   Commands']       },
       \ ]
+
+map <LEADER>st :Startify<CR>	" Open Startify
+
 
 " Far.vim
 nnoremap <silent> <LEADER>f :F  %<left><left>
