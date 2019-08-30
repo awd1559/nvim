@@ -9,6 +9,17 @@
 "set listchars=tab:▸\ ,trail:▫
 
 
+" ====== OS ==============
+let g:iswindows = 0
+let g:islinux = 0
+if(has("win32") || has("win64") || has("win95") || has("win16"))
+	let g:iswindows = 1
+else
+	let g:islinux = 1
+endif
+
+
+	
 " ====
 " ==== Auto install for first time use
 " ====
@@ -18,9 +29,15 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" ====================
-" === Editor Setup ===
-" ====================
+if iswindows && empty(glob('C:\\Users\\Administrator\\AppData\\Local\\nvim\\autoload\\plug.vim'))
+	silent !curl -fLo C:\\Users\\Administrator\\AppData\\Local\\nvim\\autoload\\plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" ====================================================
+" === Editor Setup ===================================
+" ====================================================
 set autochdir
 set number
 syntax on
@@ -145,53 +162,219 @@ set smartcase
 
 
 
-" ====
-" ==== Map
-" ====
+" =============================================
+" ==== Map ====================================
+" =============================================
 
 " Save & quit
 map Q :q<CR>
-map S :w<CR>
+map W :w<CR>
 
 " Open the vimrc file anytime
 map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
+" Undo in Insert mode
+inoremap <C-u>
+
+
+" Copy to system clipboard
+vnoremap Y :w !xclip -i -sel c<CR>
+
+" Search
+map <LEADER><CR> :nohlsearch<CR>
+noremap = nzz
+noremap - Nzz
+
+" Duplicate words
+map <LEADER>dw /\(\<\w\+\>\)\_s*\1
+
+" Folding
+map <silent> <LEADER>o za
+
+
+
+
+" ===
+" === Window management
+" ===
+" Use <space> + new arrow keys for moving the cursor around windows
+map <LEADER>w <C-w>w
+map <LEADER>u <C-w>k
+map <LEADER>e <C-w>j
+map <LEADER>n <C-w>h
+map <LEADER>i <C-w>l
+
+" Disabling the default s key
+noremap s <nop>
+
+" split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
+map su :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+map se :set splitbelow<CR>:split<CR>
+map sn :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+map si :set splitright<CR>:vsplit<CR>
+
+" Resize splits with arrow keys
+map <up> :res +5<CR>
+map <down> :res -5<CR>
+map <left> :vertical resize-5<CR>
+map <right> :vertical resize+5<CR>
+
+" Place the two screens up and down
+noremap sh <C-w>t<C-w>K
+" Place the two screens side by side
+noremap sv <C-w>t<C-w>H
+
+" Rotate screens
+noremap srh <C-w>b<C-w>K
+noremap srv <C-w>b<C-w>H
+
+
+" ===
+" === Tab management
+" ===
+" Create a new tab with tu
+map tu :tabe<CR>
+" Move around tabs with tn and ti
+map tn :-tabnext<CR>
+map ti :+tabnext<CR>
+" Move the tabs with tmn and tmi
+map tmn :-tabmove<CR>
+map tmi :+tabmove<CR>
 
 
 
 
 
-"Pathogen
-"git clone https://github.com/vim-airline/vim-airline
-"git clone https://github.com/connorholyday/vim-snazzy
-"git clone https://github.com/Valloric/YouCompleteMe
-"git clone https://github.com/majutsushi/tagbar
-"git clone https://github.com/lvht/tagbar-markdown
-"git clone https://github.com/hushicai/tagbar-javascript.vim
-"git clone https://github.com/vim-scripts/taglist.vim
-"git clone https://github.com/vim-scripts/mru.vim
-"git clone https://github.com/scrooloose/nerdtree
-"git clone https://github.com/kien/ctrlp.vim
-"git clone https://github.com/mbbill/undotree
-"git clone https://github.com/OmniSharp/omnisharp-vim
 
 
+" ===
+" === Install Plugins with Vim-Plug
+" ===
 "vim-plugin
 ":PlugInstall 
 "curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-call plug#begin('~/.vim/plugged')
+
+call plug#begin('~/.config/nvim/plugged')
+
+" Pretty Dress
 Plug 'vim-airline/vim-airline'
-Plug 'connorholyday/vim-snazzy'
-Plug 'Valloric/YouCompleteMe'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'bling/vim-bufferline'
+Plug 'liuchengxu/space-vim-theme'
+
+" File navigation
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
+
+" Taglist
 Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
-Plug 'majutsushi/tagbar'
-Plug 'lvht/tagbar-markdown'
-Plug 'hushicai/tagbar-javascript.vim'
-Plug 'vim-scripts/taglist.vim'
-Plug 'vim-scripts/mru.vim'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mbbill/undotree'
+
+" Error checking
+"Plug 'w0rp/ale'
+
+" Auto Complete
+"Plug 'Valloric/YouCompleteMe'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'davidhalter/jedi-vim'
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-github'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+"Plug 'ncm2/ncm2-match-highlight'
+Plug 'ncm2/ncm2-markdown-subscope'
+
+" Language Server
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" (Optional) Multi-entry selection UI.
+Plug 'junegunn/fzf'
+
+" Undo Tree
+Plug 'mbbill/undotree/'
+
+" Other visual enhancement
+Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'itchyny/vim-cursorword'
+"Plug 'tmhedberg/SimpylFold'
+Plug 'mhinz/vim-startify'
+
+" Git
+Plug 'rhysd/conflict-marker.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
+Plug 'gisphm/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
+
+" HTML, CSS, JavaScript, PHP, JSON, etc.
+Plug 'elzr/vim-json'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'spf13/PIV', { 'for' :['php', 'vim-plug'] }
+Plug 'gko/vim-coloresque', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'pangloss/vim-javascript', { 'for' :['javascript', 'vim-plug'] }
+Plug 'mattn/emmet-vim'
+
+" Python
+Plug 'vim-scripts/indentpython.vim', { 'for' :['python', 'vim-plug'] }
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+
+" Markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+
+" For general writing
+Plug 'reedes/vim-wordy'
+Plug 'ron89/thesaurus_query.vim'
+
+" Bookmarks
+Plug 'kshenoy/vim-signature'
+
+" Other useful utilities
+Plug 'jiangmiao/auto-pairs'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'junegunn/goyo.vim' " distraction free writing mode
+Plug 'tpope/vim-surround' " type ysks' to wrap the word with '' or type cs'` to change 'word' to `word`
+Plug 'godlygeek/tabular' " type ;Tabularize /= to align the =
+Plug 'gcmt/wildfire.vim' " in Visual mode, type i' to select all text in '', or type i) i] i} ip
+Plug 'scrooloose/nerdcommenter' " in <space>cc to comment a line
+"Plug 'yuttie/comfortable-motion.vim'
+Plug 'brooth/far.vim'
+Plug 'tmhedberg/SimpylFold'
+Plug 'kassio/neoterm'
+Plug 'vim-scripts/restore_view.vim'
+
+" Dependencies
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'kana/vim-textobj-user'
+Plug 'roxma/nvim-yarp'
+
 call plug#end()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
